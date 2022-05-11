@@ -1,0 +1,55 @@
+footer {
+	padding-top: 3rem;
+}
+footer a,
+footer .nav-link {
+	/* color: rgb(255,255,255);
+	font-weight: normal; */
+}
+footer a:hover,
+footer .nav-link:hover {
+	/* color: rgb(255,255,255);
+	background-color: transparent; */
+	text-decoration: underline;
+}
+footer ul {
+	margin:0;
+	padding:0;
+	list-style: none;
+}
+footer ul li {
+	margin:0;
+	padding:0;
+	list-style: none;
+}
+footer ul li .nav-link {
+	margin:0;
+	padding:0;
+	padding: .2rem 0;
+	font-size: 0.9rem;
+}
+
+
+
+/* Small devices (tablets, 768px and up) */
+
+@media (min-width: 768px) {
+	footer {
+		padding-top: 4rem;
+		padding-bottom: 4rem;
+	}
+}
+
+
+
+
+/* Medium devices (desktops, 992px and up) */
+
+@media (min-width: 992px) {
+}
+
+
+/* Large devices (large desktops, 1200px and up) */
+
+@media (min-width: 1200px) {
+}

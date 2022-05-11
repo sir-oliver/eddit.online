@@ -1,0 +1,765 @@
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.css"/>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.2.0/css/fixedHeader.bootstrap5.css"/>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.css"/>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.bootstrap5.css"/>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/staterestore/1.0.1/css/stateRestore.bootstrap5.css"/>
+
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+
+	<!-- <link rel="stylesheet" type="text/css" href="styles.css"/> -->
+
+	<style>
+		/* .modal-backdrop {
+			z-index: 1050;
+		} */
+		.scrollable {
+			/* height: 100%; */
+			overflow-x:hidden;
+			overflow-y:auto;
+		}
+
+		#grid {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			display: grid;
+			grid-template-columns: 64px 250px 1px 1fr;
+		}
+		#grid .gutter-col {
+			cursor: col-resize;
+			border-right: 1px dotted #797978;
+			display: flex;
+			align-items: center;
+			z-index: 1048;
+		}
+		#grid .gutter-col .handle {
+			position: absolute;
+			border-top-right-radius: 0.4rem;
+			border-bottom-right-radius: 0.4rem;
+			border: 1px dotted #797978;
+			border-left-color: #e0e0e0;
+			width: .6rem;
+			height: 4rem;
+			background-color: #e0e0e0;
+		}
+		#grid.hide-lists {
+			grid-template-columns: 64px 0px 1px 1fr !important;
+		}
+
+		#nav {
+			background-color: #333;
+			overflow:hidden;
+		}
+		#lists {
+			background-color: #e0e0e0;
+			overflow:hidden;
+		}
+		#content {
+			background-color: #ffffff;
+			overflow:hidden;
+		}
+
+		#nav a {
+			display: block;
+			position: relative;
+			cursor: pointer;
+			color: #999999;
+			padding: 0.7rem 0;
+			text-align: center;
+			text-decoration: none;
+			width: 64px;
+			/* transition: color 0.25s, background-color 0.25s; */
+			transition: none;
+		}
+		#nav .nav a.active {
+			color: #333;
+			background-color: #e0e0e0;
+		}
+		#nav .nav a.active::before {
+			position: absolute;
+			top: -1rem;
+			right: 0;
+			width: 1rem;
+			height: 1rem;
+			content: "";
+			border-bottom-right-radius: 1rem;
+			box-shadow: 4px 4px 0 0 #e0e0e0;
+			transition: none;
+		}
+		#nav .nav a.active::after {
+			position: absolute;
+			bottom: -1rem;
+			right: 0;
+			width: 1rem;
+			height: 1rem;
+			content: "";
+			border-top-right-radius: 1rem;
+			box-shadow: 4px -4px 0 0 #e0e0e0;
+			transition: none;
+		}
+
+
+
+		#nav a .icn {
+			display: block;
+			text-align: center;
+			margin: 0 auto 0.2rem auto;
+			/* transition: 0.25s; */
+		}
+		#nav a .icn i {
+			font-size: 1.4rem;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			line-height: 40px;
+			transition: color 0.25s, background-color 0.25s;
+		}
+		#nav :not(.nav) a.active .icn i,
+		#nav a:hover .icn i {
+			color: #333;
+			background-color: #e0e0e0;
+		}
+
+		#nav a .txt {
+			font-size: 0.55rem;
+			opacity: 0;
+			transition: 0.25s;
+		}
+		#nav a.active .txt,
+		#nav:hover a .txt {
+			opacity: 1;
+		}
+
+
+
+		#nav .eddit-logo {
+			color: #777;
+			position: fixed;
+			margin-left: 8px;
+			-webkit-transform-origin: 0 0;
+			-moz-transform-origin: 0 0;
+				-ms-transform-origin: 0 0;
+				-o-transform-origin: 0 0;
+					transform-origin: 0 0;
+			-webkit-transform: rotate(-90deg) translate(-50%, 50%);
+			-moz-transform: rotate(-90deg) translate(-50%, 50%);
+				-ms-transform: rotate(-90deg) translate(-50%, 50%);
+				-o-transform: rotate(-90deg) translate(-50%, 50%);
+					transform: rotate(-90deg) translate(-50%, 50%);
+			
+		}
+		#nav .eddit-logo span {
+			font-size: 0.6rem
+		}
+		/* .nav-tabs .nav-link {
+			color: #AAA;
+		}
+		.nav-tabs .description {
+			text-overflow: ellipsis;
+		}
+		.tab-content.panel {
+			padding-top: 1rem;
+		} */
+
+
+		#lists .dataTable,
+		#lists .jstree {
+			font-size: 0.8rem;
+		}
+		#lists .toolbar {
+			border-bottom: 1px dotted #797978;
+
+		} 
+		#lists .toolbar * {
+			color: #666;
+			border-color: #e0e0e0;
+			background-color: #e0e0e0;
+		}
+
+		#lists table.dataTable td:first-child, 
+		#lists table.dataTable th:first-child {
+			padding-left: .6rem;
+		}
+
+		#content .dataTable,
+		#content .jstree {
+			font-size: 0.8rem;
+		}
+		#content .toolbar {
+			border-bottom: 1px dotted #797978;
+			background-color: #e0e0e0;
+			padding: 0 1rem;
+			font-size: 0.875rem;
+		} 
+		#content .toolbar-bottom {
+			border-top: 1px dotted #797978;
+			background-color: #e0e0e0;
+			padding: 0 1rem;
+			font-size: .875rem;
+		} 
+		#content .toolbar * {
+			color: #666;
+			border-color: #e0e0e0;
+			background-color: #e0e0e0;
+		}
+		#content table.dataTable td:first-child, 
+		#content table.dataTable th:first-child {
+			padding-left: 1rem;
+		}
+	</style>
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	<script src="https://kit.fontawesome.com/c56ed75007.js" crossorigin="anonymous"></script>
+
+	<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.2.0/js/dataTables.fixedHeader.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/staterestore/1.0.1/js/dataTables.stateRestore.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/staterestore/1.0.1/js/stateRestore.bootstrap5.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+
+	<script type="text/javascript" src="https://unpkg.com/split-grid/dist/split-grid.js"></script>
+	<title>eddit - prototype - split</title>
+</head>
+<body>
+
+	<div id="grid">
+		<div id="nav">
+			<div class="d-flex flex-column h-100">
+
+					<a class="" href="" title="Home">
+						<span class="icn"><i class="fas fa-home"></i></span>
+						<!-- <img src="E-Letter.png" alt="Home" class="img-fluid" style="padding: 10px"> -->
+					</a>
+					<div class="nav">
+						<a class="active" href="#pages" title="Seiten" data-bs-toggle="tab">
+							<span class="icn"><i class="fas fa-sitemap"></i></span>
+							<span class="txt">SITEMAP</span>
+						</a>
+						<a class="" href="#objects" title="Seiteninhalt" data-bs-toggle="tab">
+							<span class="icn"><i class="far fa-file-alt"></i></span>
+							<span class="txt">INHALT</span>
+						</a>
+						<a class="" href="#files" title="Dateien" data-bs-toggle="tab">
+							<span class="icn"><i class="far fa-images"></i></span>
+							<span class="txt">DATEIEN</span>
+						</a>
+						<a class="" href="#languages" data-bs-toggle="tab" title="Languages">
+							<span class="icn"><i class="fas fa-globe-europe"></i></span>
+							<span class="txt">SPRACHE</span>
+						</a>
+						<a class="" href="#publish" data-bs-toggle="tab" title="Publish">
+							<span class="icn"><i class="fas fa-bolt"></i></span>
+							<span class="txt">PUBLISH PAGE</span>
+						</a>
+						<a class="" href="#linkcheck" data-bs-toggle="tab" title="Link Checker">
+							<span class="icn"><i class="fas fa-code"></i></span>
+							<span class="txt">CHECK <br>LINKS</span>
+						</a>
+						<a class="" href="#settings" data-bs-toggle="tab" title="Settings">
+							<span class="icn"><i class="fas fa-cog"></i></span>
+							<span class="txt">SETTINGS</span>
+						</a>
+					</div>
+					<!-- <a class="" href="#languages" data-bs-toggle="modal" data-bs-target="#exampleModal" title="Languages">
+						<span class="icn"><i class="fas fa-globe-europe"></i></span>
+						<span class="txt">SPRACHE</span>
+					</a>
+					<a class="" href="#publish" data-bs-toggle="modal" data-bs-target="#exampleModal" title="Publish">
+						<span class="icn"><i class="fas fa-bolt"></i></span>
+						<span class="txt">PUBLISH</span>
+					</a> -->
+					<!-- <a class="" onclick="hideLists();resizeContent()" title="Toggle lists">
+						<i class="fas fa-list-ul"></i>
+					</a> -->
+					<div class="mt-auto mb-auto">
+						<div class="eddit-logo"><b>eddit.online</b><span> © busta.digital</span></div>
+					</div>
+					<a class="" href="" title="Logout">
+						<span class="icn"><i class="fas fa-sign-out-alt"></i></span>
+						<span class="txt">LOGOUT</span>
+					</a>
+				</div>
+		</div>
+		<div class="" id="lists">
+
+
+			<div class="tab-content">
+		
+				<div class="tab-pane active" id="pages">
+					<div class="h-100 d-flex flex-column">
+						<div class="toolbar">
+							<div class="input-group input-group-sm">
+								<input type="text" class="form-control" placeholder="Suche" id="nodesFilter">
+								<button class="btn btn-light btn-search" type="button"><i class="fa fa-search"></i></button>
+							</div>
+						</div>
+						<div class="scrollable flex-grow-1">
+							<div id="nodeTree"></div>
+						</div>
+					</div>
+				</div>
+		
+				<div class="tab-pane" id="objects">
+					<div class="h-100 d-flex flex-column">
+						<div class="toolbar">
+							<div class="input-group input-group-sm">
+								<input type="text" class="form-control" placeholder="Suche" id="objectsFilter">
+								<button class="btn btn-light btn-search" type="button"><i class="fa fa-search"></i></button>
+								<button class="btn btn-light" type="button" onclick="ce.objecttree.modal('ce.objecttree.new',{ IDparent: 0 });" data-toggle="tooltip" data-placement="right" data-container=".sidebar" title="" data-original-title="Neues Objekt einfügen"><i class="fa fa-plus-square-o"></i></button>
+								<button class="btn btn-light" type="button" onclick="ce.objecttree.modal('ce.objecttree.copy',{ IDparent: 0 });" data-toggle="tooltip" data-placement="right" data-container=".sidebar" title="" data-original-title="Inhalt kopieren"><i class="fa fa-copy"></i></button>
+							</div>
+						</div>
+						<div class="scrollable flex-grow-1">
+							<div id="objectTree"></div>
+						</div>
+					</div>
+				</div>
+		
+				<div class="tab-pane" id="files">
+					<div class="folders d-flex flex-column" style="height: 37vh">
+						<div class="toolbar">
+							<div class="input-group input-group-sm">
+								<input type="text" class="form-control" placeholder="Suche" id="foldersFilter">
+								<button class="btn btn-light btn-search" type="button"><i class="fa fa-search"></i></button>
+								<button class="btn btn-light" type="button" onclick="ce.filetree.tree.refresh()" data-toggle="tooltip" data-placement="right" data-container=".sidebar" title="" data-original-title="Ordner aktualisieren"><i class="fa fa-refresh"></i></button>
+							</div>
+						</div>
+						<div class="scrollable flex-grow-1">
+							<div id="fileTree" class="jstree jstree-3 jstree-default jstree-default-responsive" role="tree" aria-multiselectable="true" tabindex="0" aria-activedescendant="images" aria-busy="false"><ul class="jstree-container-ul jstree-children jstree-contextmenu" role="group"><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="images_anchor" aria-expanded="true" id="images" class="jstree-node  jstree-open"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="images_anchor"><i class="jstree-icon jstree-themeicon fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>images</a><ul role="group" class="jstree-children"><li role="treeitem" aria-selected="false" aria-level="2" aria-labelledby="images/cocktails_anchor" id="images/cocktails" class="jstree-node  jstree-leaf"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="images/cocktails_anchor"><i class="jstree-icon jstree-themeicon fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>cocktails</a></li><li role="treeitem" aria-selected="true" aria-level="2" aria-labelledby="images/karte_anchor" id="images/karte" class="jstree-node  jstree-leaf"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor jstree-clicked" href="#" tabindex="-1" id="images/karte_anchor"><i class="jstree-icon jstree-themeicon fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>karte</a></li><li role="treeitem" aria-selected="false" aria-level="2" aria-labelledby="images/slideshow_anchor" id="images/slideshow" class="jstree-node  jstree-leaf"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="images/slideshow_anchor"><i class="jstree-icon jstree-themeicon fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>slideshow</a></li><li role="treeitem" aria-selected="false" aria-level="2" aria-labelledby="images/sushi_anchor" aria-expanded="false" id="images/sushi" class="jstree-node  jstree-closed jstree-last"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="images/sushi_anchor"><i class="jstree-icon jstree-themeicon fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>sushi</a></li></ul></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="layout_anchor" aria-expanded="true" id="layout" class="jstree-node  jstree-open"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="layout_anchor"><i class="jstree-icon jstree-themeicon fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>layout</a><ul role="group" class="jstree-children"><li role="treeitem" aria-selected="false" aria-level="2" aria-labelledby="layout/icons_anchor" id="layout/icons" class="jstree-node  jstree-leaf jstree-last"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="layout/icons_anchor"><i class="jstree-icon jstree-themeicon fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>icons</a></li></ul></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="presse_anchor" id="presse" class="jstree-node  jstree-leaf jstree-last"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="presse_anchor"><i class="jstree-icon jstree-themeicon fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>presse</a></li></ul></div>
+						</div>
+					</div>
+
+					<div class="files d-flex flex-column" style="height: 63vh">
+						<div class="toolbar">
+							<div class="input-group input-group-sm">
+								<input type="search" class="form-control" placeholder="Dateisuche" id="filesFilter">
+								<button class="btn btn-light btn-search" type="button"><i class="fa fa-search"></i></button>
+								<button class="btn btn-light" type="button" onclick="ce.filetree.rename();" data-toggle="tooltip" data-placement="right" data-container=".sidebar" title="" data-original-title="Datei umbenennen"><i class="fa fa-exchange"></i></button>
+								<button class="btn btn-light" type="button" onclick="ce.filetree.delete();" data-toggle="tooltip" data-placement="right" data-container=".sidebar" title="" data-original-title="Datei(en) löschen"><i class="fa fa-trash-o"></i></button>
+							</div>
+						</div>
+						<div id="total-progress" style="display: none" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+							<div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress=""></div>
+						</div>
+						<div class="scrollable flex-grow-1">
+							<table id="fileList" class="table table-striped" style="width:100%">
+								<thead>
+									<tr>
+										<th>Bild</th>
+										<th>Name</th>
+										<th>Datum</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+
+				<div class="tab-pane" id="languages">
+					<div class="container d-flex flex-column h-100">
+						<div class="">
+							<h3>SPRACHEN</h3>
+						</div>
+						<div class="scrollable d-flex flex-column justify-content-evenly flex-grow-1">
+							<a class="btn btn-outline-secondary d-block" href="/c+e/main/lg=de-at"><i class="flag-icon flag-icon-de-at"></i> AT deutsch</a>
+							<a class="btn btn-outline-secondary d-block" href="/c+e/main/lg=de-de"><i class="flag-icon flag-icon-de-de"></i> DE deutsch</a>
+							<a class="btn btn-outline-secondary d-block" href="/c+e/main/lg=de-ch"><i class="flag-icon flag-icon-de-ch"></i> CH deutsch</a>
+							<a class="btn btn-outline-secondary d-block" href="/c+e/main/lg=it-ch"><i class="flag-icon flag-icon-it-ch"></i> CH italienisch</a>
+							<a class="btn btn-outline-secondary d-block" href="/c+e/main/lg=fr-ch"><i class="flag-icon flag-icon-fr-ch"></i> CH französisch</a>
+							<a class="btn btn-outline-secondary d-block" href="/c+e/main/lg=fr-fr"><i class="flag-icon flag-icon-fr-fr"></i> FR französisch</a>
+							<a class="btn btn-outline-secondary d-block" href="/c+e/main/lg=it-it"><i class="flag-icon flag-icon-it-it"></i> IT italienisch</a>
+							<a class="btn btn-outline-secondary d-block" href="/c+e/main/lg=en-gb"><i class="flag-icon flag-icon-en-gb"></i> GB englisch</a>
+							<a class="btn btn-outline-secondary d-block" href="/c+e/main/lg=fr-be"><i class="flag-icon flag-icon-fr-be"></i> BE französisch</a>
+							<a class="btn btn-outline-secondary d-block" href="/c+e/main/lg=nl-be"><i class="flag-icon flag-icon-nl-be"></i> BE flämisch</a>
+							<a class="btn btn-outline-secondary d-block" href="/c+e/main/lg=nl-nl"><i class="flag-icon flag-icon-nl-nl"></i> NL niederländisch</a>
+							<a class="btn btn-outline-secondary d-block" href="/c+e/main/lg=es-es"><i class="flag-icon flag-icon-es-es"></i> ES spanisch</a>
+						</div>
+					</div>
+				</div>
+		
+				<div class="tab-pane" id="publish">
+					<div class="container d-flex flex-column h-100">
+						<div class="">
+							<h3>PUBLISH</h3>
+						</div>
+						<div class="scrollable d-flex flex-column justify-content-start flex-grow-1">
+							<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Alias sit non exercitationem beatae consequatur unde rerum velit sequi impedit. Ad, at repellat veritatis esse beatae dolores qui officia eum accusantium!</p>
+							<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Alias sit non exercitationem beatae consequatur unde rerum velit sequi impedit. Ad, at repellat veritatis esse beatae dolores qui officia eum accusantium!</p>
+						</div>
+					</div>
+				</div>
+		
+				<div class="tab-pane" id="linkcheck">
+					<div class="container d-flex flex-column h-100">
+						<div class="">
+							<h3>LINK CHECK</h3>
+						</div>
+						<div class="scrollable d-flex flex-column justify-content-start flex-grow-1">
+							<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Alias sit non exercitationem beatae consequatur unde rerum velit sequi impedit. Ad, at repellat veritatis esse beatae dolores qui officia eum accusantium!</p>
+							<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Alias sit non exercitationem beatae consequatur unde rerum velit sequi impedit. Ad, at repellat veritatis esse beatae dolores qui officia eum accusantium!</p>
+						</div>
+					</div>
+				</div>
+		
+				<div class="tab-pane" id="settings">
+					<div class="container d-flex flex-column h-100">
+						<div class="">
+							<h3>SETTINGS</h3>
+						</div>
+						<div class="scrollable d-flex flex-column justify-content-start flex-grow-1">
+							<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Alias sit non exercitationem beatae consequatur unde rerum velit sequi impedit. Ad, at repellat veritatis esse beatae dolores qui officia eum accusantium!</p>
+							<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Alias sit non exercitationem beatae consequatur unde rerum velit sequi impedit. Ad, at repellat veritatis esse beatae dolores qui officia eum accusantium!</p>
+						</div>
+					</div>
+				</div>
+		
+
+
+
+
+			</div>
+
+
+
+
+
+
+
+
+
+
+
+		</div>
+		<div class="gutter-col gutter-column-1">
+			<div class="handle"></div>
+		</div>
+		<div id="content">
+			<!-- <div class="data d-flex flex-column h-100">
+				<div class="toolbar">
+					TOOLBAR
+				</div>
+				<div class="scrollable flex-grow-1"> -->
+					<table id="example" class="table table-striped" style="width:100%">
+						<thead>
+							<tr>
+								<th>First name</th>
+								<th>Last name</th>
+								<th>Position</th>
+								<th>Office</th>
+								<th>Start date</th>
+								<th>Salary</th>
+							</tr>
+						</thead>
+						<!-- <tfoot>
+							<tr>
+								<th>First name</th>
+								<th>Last name</th>
+								<th>Position</th>
+								<th>Office</th>
+								<th>Start date</th>
+								<th>Salary</th>
+							</tr>
+						</tfoot> -->
+					</table>
+				<!-- </div>
+			</div> -->
+		</div>
+	</div>
+
+	<div class="modal fade" id="exampleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+			  ...
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			  <button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		  </div>
+		</div>
+	</div>
+
+	<div class="offcanvas offcanvas-end" data-bs-backdrop="false" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+		<div class="offcanvas-header">
+		  <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+		  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body">
+		  <div>
+			Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+		  </div>
+		  <p>Clicked on ROW ID <span id="row_id">_</span></p>
+		  <div class="dropdown mt-3">
+			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+			  Dropdown button
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			  <li><a class="dropdown-item" href="#">Action</a></li>
+			  <li><a class="dropdown-item" href="#">Another action</a></li>
+			  <li><a class="dropdown-item" href="#">Something else here</a></li>
+			</ul>
+		  </div>
+		</div>
+	</div>
+
+
+	<script>
+		var eddit_state = 
+		{
+			contentWidth: 0,
+			gridSizes: '64px 250px 1px 1fr'
+		}
+
+		loadState();
+
+		function resizeContent() {
+			eddit_state.gridSizes = document.querySelector('#grid').style['grid-template-columns'];
+			eddit_state.contentWidth = $('#content').outerWidth() + 1;
+			// if ($('#lists').width() == 0)
+			// {
+			// 	$('#nav .nav').hide();
+			// }
+			// else
+			// {
+			// 	$('#nav .nav').show();
+			// }
+			$('#offcanvasExample').css( { width: eddit_state.contentWidth } );
+		}
+		function loadState() {
+			var _state = JSON.parse( window.localStorage.getItem('eddit_state') );
+			if (typeof _state == 'object' && _state != null)
+			{
+				console.log(_state)
+				eddit_state = _state;
+				$('#grid').css('grid-template-columns', eddit_state.gridSizes);
+				console.log( 'loadState', eddit_state);
+			}
+		}
+		function saveState() {
+			window.localStorage.setItem('eddit_state', JSON.stringify(eddit_state));
+			console.log( 'saveState', eddit_state);
+		}
+		function hideLists() {
+			
+			$('#grid').css('grid-template-columns', '64px 0px 1px 1fr');
+		}
+		// https://split.js.org/#/split-grid
+		// https://github.com/nathancahill/split/tree/master/packages/split-grid
+		var grid = Split({ // gutters specified in options
+			columnGutters: [{
+				track: 2,
+				element: document.querySelector('.gutter-column-1'),
+			}],
+			columnMinSizes: { 1: 250 },
+			snapOffset: 0,
+			onDrag: resizeContent,
+			onDragEnd: saveState
+		})
+
+		$(document).ready( function () {
+
+			resizeContent();
+			var bsOffcanvas = new bootstrap.Offcanvas( $('#offcanvasExample') );
+
+			var dataTable = $('#example')
+				.DataTable( {
+					fixedHeader: {
+						header: true,
+						headerOffset: 37
+					},
+					dom: '<"data d-flex flex-column h-100"<"toolbar d-flex justify-content-between"fl><"scrollable flex-grow-1"t><"toolbar-bottom d-flex justify-content-between"ip>>',
+					ajax: "datatable.json",
+					select: true,
+					stateSave: true,
+					responsive: true
+				} )
+				.on('dblclick', 'tr', function () {
+					dataTable.rows(this).select();
+					bsOffcanvas.show();
+
+					var index = dataTable.row(this).index();
+					$('#offcanvasExample #row_id').html(index);
+					// console.log('dblclick',this,index);
+				});
+
+			var filesTable = $('#fileList')
+				.DataTable( {
+					dom: 't',
+					ajax: "files.json",
+					select: true,
+					stateSave: true,
+					responsive: false,
+					"columnDefs": [
+						{
+							"targets": 0,
+							"orderable": false,
+							"render": function ( data, type, row )	// bild
+							{
+								if (data.match(/svg$/))
+									return '<div class="draggable" data-file="'+data+'" data-size="'+row[2]+'" data-date="'+row[3]+" "+row[4]+'"><img src="/assets/'+data+'" style="max-width:60px"><i class="icon"></i></div>'; // +' ('+ row[1]+')';
+								else if (data.match(/gif|jp?g|png$/i))
+									return '<div class="draggable" data-file="'+data+'" data-size="'+row[2]+'" data-date="'+row[3]+" "+row[4]+'"><img src="/media/W/60/'+data+'"><i class="icon"></i></div>'; // +' ('+ row[1]+')';
+								else
+									return '<div class="draggable" data-file="'+data+'" data-size="'+row[2]+'" data-date="'+row[3]+" "+row[4]+'"><img src="/c+e/assets/icons/document.png"><i class="icon"></i></div>';
+							}
+						},
+						{
+							"targets": 1,
+							"orderable": true,
+							"render": function ( data, type, row )	// name und groesse
+							{
+								var deleteButton = '<a href="javascript:;" class="btn fa fa-trash-o" style="font-size:14px; padding: 4px 10px 0 0" onclick="ce.filetree.delete(\''+row[1]+'\')"></a>';
+								var renameButton = '<a href="javascript:;" class="btn fa fa-exchange" style="font-size:14px; padding: 4px 10px 0 0" onclick="ce.filetree.rename(\''+row[1]+'\')"></a>';
+								content = '<span>'+data+'</span>'+'<span class="i">'+row[2]+' kB</span>'; // +' ('+ row[1]+')';
+								return content;
+							}
+						},
+						{
+							"targets": 2,
+							"orderable": true,
+							"render": function ( data, type, row )	// datum
+							{
+								var deleteButton = '<a href="javascript:;" class="btn fa fa-trash-o" style="font-size:14px; float: right; padding-right: 3px;" onclick="ce.filetree.delete(\''+row[1]+'\')"></a>';
+								var content = '<span>'+row[3]+'</span>'+'<span class="i">'+row[4]+'</span>'; // +' ('+ row[1]+')';
+								return content;
+							}
+						}
+					]
+
+				} )
+				.on('dblclick', 'tr', function () {
+					filesTable.rows(this).select();
+					// bsOffcanvas.show();
+					var index = filesTable.row(this).index();
+					// $('#offcanvasExample #row_id').html(index);
+					console.log('dblclick',this,index);
+				});
+
+
+
+			$('#exampleModal')
+				.on('show.bs.modal', function () {
+					// console.log('show modal');
+				});
+
+			$('#offcanvasExample')
+				.on('show.bs.offcanvas', function () {
+					// console.log('show offcanvas, resize to',contentWidth);
+					$(this).css( { width: eddit_state.contentWidth } )
+				})
+
+			$('#nodeTree').jstree(
+			{
+				"core" :
+				{
+					"animation" : 100,
+					'data' :
+					{
+						'url' : 'nodes.json',
+						'data' : function () {
+							return { 'lg' : 'de' };
+						},
+						'method': 'POST'
+					},
+					'themes':
+					{
+						'name': 'default',
+						'responsive': true
+					},
+					"check_callback" : true
+				},
+				"types" : {
+					'default' : { 'icon' : 'fa fa-file-o', 'valid_children': [] },
+					'objects' : { 'icon' : 'fa fa-file-text-o', 'valid_children': ['objects'] },
+					'folder' : { 'icon' : 'fa fa-folder-open-o', 'valid_children': [] },
+					'i18n' : { 'icon' : 'fa fa-flag-o', 'valid_children' : ['i18n']},
+					'news' : { 'icon' : 'fa fa-newspaper-o', 'valid_children' : ['news']},
+					'newsletter' : { 'icon' : 'fa fa-envelope-o', 'valid_children' : ['newsletter']},
+					'node' : { 'icon' : '', 'valid_children' : ['node']},
+					'objects' : { 'icon' : 'fa fa-file-text-o', 'valid_children' : ['objects']}
+				},
+				"state" : { "key" : "nodeTree", "events": "changed.jstree open_node.jstree close_node.jstree", "filter" : "selected" },
+				"plugins" : ["contextmenu", "dnd", "state", "types", "search"],
+			});
+
+
+			$('#objectTree').jstree(
+			{
+				"core" :
+				{
+					"animation" : 100,
+					'data' :
+					{
+						'url' : 'objects.json',
+						'data' : function () {
+							return { 'lg' : 'de' };
+						},
+						'method': 'POST'
+					},
+					'themes':
+					{
+						'name': 'default',
+						'responsive': true
+					},
+					"check_callback" : true
+				},
+				"types" : {
+					'default' : { 'icon' : 'fa fa-object-group' },
+					'box' : { 'icon' : 'fa fa-address-card-o' , 'valid_children' : []},
+					'collapseBox' : { 'icon' : 'fa fa-map-o' , 'valid_children' : []},
+					'column' : { 'icon' : 'fa fa-columns' , 'valid_children' : -1},
+					'ctaBox' : { 'icon' : '' , 'valid_children' : []},
+					'download' : { 'icon' : 'fa fa-download' , 'valid_children' : []},
+					'events' : { 'icon' : 'fa fa-calendar' , 'valid_children' : []},
+					'form' : { 'icon' : 'fa fa-wpforms' , 'valid_children' : []},
+					'header' : { 'icon' : 'fa fa-header' , 'valid_children' : []},
+					'headline' : { 'icon' : 'fa fa-header' , 'valid_children' : []},
+					'html' : { 'icon' : 'fa fa-code' , 'valid_children' : []},
+					'i18n' : { 'icon' : 'fa fa-flag-o' , 'valid_children' : []},
+					'iframe' : { 'icon' : 'fa fa-tv' , 'valid_children' : []},
+					'image' : { 'icon' : 'fa fa-image' , 'valid_children' : []},
+					'linkImage' : { 'icon' : 'fa fa-image' , 'valid_children' : []},
+					'linkText' : { 'icon' : 'fa fa-link' , 'valid_children' : []},
+					'news' : { 'icon' : 'fa fa-newspaper-o' , 'valid_children' : []},
+					'newsletter' : { 'icon' : 'fa fa-envelope-o' , 'valid_children' : []},
+					'node' : { 'icon' : '' , 'valid_children' : []},
+					'objects' : { 'icon' : 'fa fa-file-text-o' , 'valid_children' : []},
+					'persons' : { 'icon' : 'fa fa-user' , 'valid_children' : []},
+					'plugin' : { 'icon' : 'fa fa-plug' , 'valid_children' : []},
+					'row' : { 'icon' : 'fa fa-table' , 'valid_children' : ["column","box"]},
+					'section' : { 'icon' : 'fa fa-folder-o' , 'valid_children' : -1},
+					'slide' : { 'icon' : 'fa fa-image' , 'valid_children' : []},
+					'slider' : { 'icon' : 'fa fa-map-o' , 'valid_children' : ["slide"]},
+					'slideshow' : { 'icon' : 'fa fa-map' , 'valid_children' : []},
+					'template' : { 'icon' : '' , 'valid_children' : []}
+				},
+				"state" : { "key" : "nodeTree", "events": "changed.jstree open_node.jstree close_node.jstree", "filter" : "selected" },
+				"plugins" : ["contextmenu", "dnd", "state", "types", "search"],
+			});
+
+		});
+
+	</script>
+
+</body>
+</html>

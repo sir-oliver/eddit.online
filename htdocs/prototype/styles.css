@@ -1,0 +1,219 @@
+:root {
+	--h1: 4px;
+	--v1: 4px;
+	--blur1: 16px;
+	--color-dark: rgba(255,255,255,0.25);
+	--h2: -4px;
+	--v2: -4px;
+	--blur2: 16px;
+	--color-light: rgba(255, 255, 255, 0.3);
+	--bg-angle: 135deg;
+	--bg-start: rgba(0,0,0,0.22); 
+	--bg-end: rgba(255,255,255,0.25);
+}
+
+.modal-backdrop {
+	z-index: 1050;
+}
+#grid .pane {
+	height: 100%;
+	overflow-x:hidden;
+	/* overflow-y:hidden; */
+	overflow-y:auto;
+}
+#nav {
+	padding: 0.5rem;
+	background-color: #333;
+}
+#lists {
+	background-color: #f0f0f0;
+}
+#content {
+}
+
+#grid {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: grid;
+	grid-template-columns: 64px 250px 1px 1fr;
+}
+#grid .gutter-col {
+	cursor: col-resize;
+	/* background-color: grey; */
+	border-right: 1px solid #dee2e6;
+	display: flex;
+	align-items: center;
+	z-index: 1048;
+}
+#grid .gutter-col .handle {
+	position: absolute;
+	/* margin-left: -0.25rem; */
+	border-top-right-radius: 0.4rem;
+	border-bottom-right-radius: 0.4rem;
+	border: 1px solid #dee2e6;
+	border-left-color: #f0f0f0;
+	width: .6rem;
+	height: 4rem;
+	background-color: #f0f0f0;
+}
+#grid .gutter-col .handle2 {
+	position: absolute;
+	margin-left: -0.25rem;
+	border-radius: 0.3rem;
+	border: 1px solid #dee2e6;
+	width: .6rem;
+	height: 4rem;
+	background-color: #fff;
+	background-size: 0.7rem 0.7rem;
+	background-image: linear-gradient(45deg, rgba(100, 100, 100, 0.15) 25%, transparent 25%, transparent 50%, rgba(100, 100, 100, 0.15) 50%, rgba(100, 100, 100, 0.15) 75%, transparent 75%, transparent);
+}
+
+/* #grid.hide-lists #lists,
+#grid.hide-lists .gutter-col {
+	display: none;
+}
+#grid.hide-lists #content {
+	grid-column-start: 2;
+    grid-column-end: 5;
+} */
+
+#grid.hide-lists {
+	grid-template-columns: 64px 0px 1px 1fr !important;
+}
+
+#nav a {
+	display: block;
+	cursor: pointer;
+	color: #999999;
+	/* padding: 0.4rem; */
+	margin: 0.7rem 0;
+	text-align: center;
+	text-decoration: none;
+}
+#nav a.active,
+#nav a:hover {
+	/* color: #EEEEEE; */
+	/* border: 1px solid #eee; */
+	/* color: #333;
+	background-color: rgba(255,255,255,0.5);
+	border-radius: 50%; */
+	/* background: linear-gradient(var(--bg-angle), var(--bg-start), var(--bg-end));
+	box-shadow: var(--h1) var(--v1) var(--blur1) var(--color-dark), 
+            	var(--h2) var(--v2) var(--blur2) var(--color-light); */
+}
+#nav>div>a:first-child {
+	margin-top: 0;
+}
+#nav>div>a:last-child {
+	margin-bottom: 0;
+}
+
+
+
+#nav a i {
+	/* position: relative; */
+	display: inline-block;
+	width: 40px;
+	font-size: 1.4rem;
+	text-align: center;
+	line-height: 40px;
+	margin-bottom: 0.4rem;
+	transition: 0.25s;
+	border-radius: 50%;
+}
+#nav a.active i,
+#nav a:hover i {
+	color: #333;
+	background-color: rgba(255,255,255,0.5);
+	/* box-shadow: 0 0 12px rgba(255,255,255,0.5); */
+	/* text-shadow: 0 0 2px rgb(255 234 0); */
+}
+#nav a.active i {
+	box-shadow: 0 0 12px rgba(255,255,255,0.5);
+}
+/* #nav a.active i::before {
+	display: block;
+	position: absolute;
+	content: "";
+	top: 0;
+	right: 0;
+	width: 12px;
+	height: 12px;
+
+	background-color: red;
+} */
+/* #nav a.active i::after {
+	display: block;
+	position: absolute;
+	content: "";
+	bottom: 0;
+	right: 0;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background-color: rgba(255,255,255,0.5);
+} */
+
+
+
+#nav a span {
+	font-size: 0.55rem;
+	opacity: 0;
+	transition: 0.25s;
+}
+#nav:hover a span {
+	opacity: 1;
+}
+
+#nav .brand {
+    color: #777;
+    width: max-content;
+    writing-mode: lr-tb;
+    margin: 0 0 0 5px;
+    transform-origin: left top 0;
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+#nav .eddit-logo {
+    color: #777;
+	position: fixed;
+	/* top: 0;
+	bottom: 0; */
+	/* left: 0; */
+	/* height: 1.5em;
+	margin: auto; */
+	-webkit-transform-origin: 0 0;
+	   -moz-transform-origin: 0 0;
+		-ms-transform-origin: 0 0;
+		 -o-transform-origin: 0 0;
+			transform-origin: 0 0;
+	-webkit-transform: rotate(-90deg) translate(-50%, 50%);
+	   -moz-transform: rotate(-90deg) translate(-50%, 50%);
+		-ms-transform: rotate(-90deg) translate(-50%, 50%);
+		 -o-transform: rotate(-90deg) translate(-50%, 50%);
+			transform: rotate(-90deg) translate(-50%, 50%);
+	
+}
+#nav .eddit-logo span {
+	font-size: 0.6rem
+}
+.nav-tabs .nav-link {
+	color: #AAA;
+}
+.nav-tabs .description {
+	text-overflow: ellipsis;
+}
+.tab-content.panel {
+	padding-top: 1rem;
+}
+.scrollable {
+	/* overflow-x: hidden;
+	overflow-y: auto */
+}

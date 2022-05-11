@@ -1,0 +1,798 @@
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.css"/>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.2.0/css/fixedHeader.bootstrap5.css"/>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.css"/>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.bootstrap5.css"/>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/staterestore/1.0.1/css/stateRestore.bootstrap5.css"/>
+
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+
+	<link rel="stylesheet" type="text/css" href="styles.css"/>
+	 
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+	<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.2.0/js/dataTables.fixedHeader.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/staterestore/1.0.1/js/dataTables.stateRestore.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/staterestore/1.0.1/js/stateRestore.bootstrap5.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+
+	<script type="text/javascript" src="https://unpkg.com/split-grid/dist/split-grid.js"></script>
+
+	<title>eddit - prototype - split</title>
+</head>
+<body>
+
+	<div id="grid">
+		<div id="nav">
+			<div class="d-flex flex-column h-100">
+					<a class="" href="split.html" title="Content / Data">
+						<i class="bi bi-house"></i>
+					</a>
+					<a class="" href="split.html" title="Languages">
+						<i class="bi bi-translate"></i>
+					</a>
+					<a class="" data-bs-toggle="modal" data-bs-target="#exampleModal" title="Modal">
+						<i class="bi bi-window-stack"></i>
+					</a>
+					<a class="" onclick="hideLists();resizeContent()" title="Toggle lists">
+						<i class="bi bi-list-task"></i>
+					</a>
+					<!-- <a class="" onclick="$('#grid').toggleClass('hide-lists');resizeContent()" title="Toggle lists">
+						<i class="bi bi-list-task"></i>
+					</a> -->
+					<a id="btn_editor" class="h2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" title="Editor">
+						<i class="bi bi-pencil-square"></i>
+					</a>
+					<div class="brand mt-auto"><b>eddit.online</b> © busta.digital</div>
+					<a class="" href="split.html" title="Settings">
+						<i class="bi bi-gear-fill"></i>
+					</a>
+					<a class="" href="split.html" title="Logout">
+						<i class="bi bi-power"></i>
+					</a>
+				</div>
+		</div>
+		<div class="pane Xcontainer-fluid" id="lists">
+
+
+
+
+
+			<ul class="nav nav-tabs nav-justified">
+				<li class="nav-item"><a class="nav-link active" href="#pages" data-bs-toggle="tab"><i class="fa fa-sitemap"></i> SEITEN</a></li>
+				<li class="nav-item"><a class="nav-link" href="#objects" data-bs-toggle="tab"><i class="fa fa-th-list"></i> INHALT</a></li>
+				<li class="nav-item"><a class="nav-link" href="#files" data-bs-toggle="tab"><i class="fa fa-picture-o"></i> DATEI</a></li>
+			</ul>
+			<div class="tab-content panel panel-default">
+		
+				<div class="tab-pane active" id="pages">
+					<div class="panel-body">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Seitensuche" id="nodesFilter">
+							<div class="input-group-btn">
+								<button class="btn btn-default btn-search" type="button"><i class="fa fa-search"></i></button>
+							</div>
+						</div>
+					</div>
+					<div class="panel-body tree-body">
+						<div class="scrollable" style="margin-right: -2px;">
+							<div id="nodeTree" xstyle="margin-left: -22px" class="jstree jstree-1 jstree-default jstree-default-responsive" role="tree" aria-multiselectable="true" tabindex="0" aria-activedescendant="2" aria-busy="false"><ul class="jstree-container-ul jstree-children jstree-contextmenu" role="group"><li role="treeitem" data-id="2" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="2_anchor" aria-expanded="true" id="2" class="jstree-node  jstree-open"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="2_anchor"><i class="jstree-icon jstree-themeicon node fa fa-file-text-o jstree-themeicon-custom" role="presentation"></i>Website</a><ul role="group" class="jstree-children"><li role="treeitem" data-id="3" data-hidden="false" aria-selected="true" aria-level="2" aria-labelledby="3_anchor" id="3" class="jstree-node  jstree-leaf"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor jstree-clicked" href="#" tabindex="-1" id="3_anchor"><i class="jstree-icon jstree-themeicon node fa fa-file-text-o jstree-themeicon-custom" role="presentation"></i>Startseite</a></li><li role="treeitem" data-id="4" data-hidden="false" aria-selected="false" aria-level="2" aria-labelledby="4_anchor" aria-expanded="false" id="4" class="jstree-node  jstree-closed jstree-last"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="4_anchor"><i class="jstree-icon jstree-themeicon node fa fa-file-text-o jstree-themeicon-custom" role="presentation"></i>Top Nav</a></li></ul></li><li role="treeitem" data-id="9" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="9_anchor" id="9" class="jstree-node  jstree-leaf"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="9_anchor"><i class="jstree-icon jstree-themeicon node fa fa-flag-o jstree-themeicon-custom" role="presentation"></i>Phrasen</a></li><li role="treeitem" data-id="10" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="10_anchor" id="10" class="jstree-node  jstree-leaf"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="10_anchor"><i class="jstree-icon jstree-themeicon node fa fa-file-o jstree-themeicon-custom" role="presentation"></i>Templates</a></li><li role="treeitem" data-id="6" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="6_anchor" aria-expanded="true" id="6" class="jstree-node  jstree-open jstree-last"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="6_anchor"><i class="jstree-icon jstree-themeicon node fa fa-user jstree-themeicon-custom" role="presentation"></i>CMS Benutzer</a><ul role="group" class="jstree-children"><li role="treeitem" data-id="7" data-hidden="false" aria-selected="false" aria-level="2" aria-labelledby="7_anchor" id="7" class="jstree-node  jstree-leaf"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="7_anchor"><i class="jstree-icon jstree-themeicon node fa fa-user jstree-themeicon-custom" role="presentation"></i>networx</a></li><li role="treeitem" data-id="8" data-hidden="false" aria-selected="false" aria-level="2" aria-labelledby="8_anchor" id="8" class="jstree-node  jstree-leaf jstree-last"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="8_anchor"><i class="jstree-icon jstree-themeicon node fa fa-user jstree-themeicon-custom" role="presentation"></i>Kunde</a></li></ul></li></ul></div>
+						</div>
+					</div>
+				</div>
+		
+				<div class="tab-pane" id="objects">
+					<div class="panel-body">
+						<div class="input-group">
+							<div class="input-group-btn">
+								<button class="btn btn-default" type="button" onclick="ce.objecttree.modal('ce.objecttree.new',{ IDparent: 0 });" data-toggle="tooltip" data-placement="right" data-container=".sidebar" title="" data-original-title="Neues Objekt einfügen"><i class="fa fa-plus-square-o"></i></button>
+								<button class="btn btn-default" type="button" onclick="ce.objecttree.modal('ce.objecttree.copy',{ IDparent: 0 });" data-toggle="tooltip" data-placement="right" data-container=".sidebar" title="" data-original-title="Inhalt kopieren"><i class="fa fa-copy"></i></button>
+							</div>
+							<input type="text" class="form-control" placeholder="Objektsuche" id="objectsFilter">
+							<div class="input-group-btn">
+								<button class="btn btn-default btn-search" type="button"><i class="fa fa-search"></i></button>
+							</div>
+						</div>
+					</div>
+					<div class="panel-body tree-body">
+						<div class="scrollable" style="margin-right: -2px;">
+							<div id="objectTree" xstyle="margin-left: -22px" class="jstree jstree-2 jstree-default jstree-default-responsive" role="tree" aria-multiselectable="true" tabindex="0" aria-activedescendant="56" aria-busy="false"><ul class="jstree-container-ul jstree-children jstree-contextmenu" role="group"><li role="treeitem" data-id="56" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="56_anchor" aria-expanded="false" id="56" class="jstree-node  jstree-closed"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="56_anchor"><i class="jstree-icon jstree-themeicon object fa fa-map-o jstree-themeicon-custom" role="presentation"></i>Slider</a></li><li role="treeitem" data-id="123" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="123_anchor" aria-expanded="false" id="123" class="jstree-node  jstree-closed"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="123_anchor"><i class="jstree-icon jstree-themeicon object fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>Bereich Speisekarten</a></li><li role="treeitem" data-id="285" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="285_anchor" aria-expanded="false" id="285" class="jstree-node  jstree-closed"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="285_anchor"><i class="jstree-icon jstree-themeicon object fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>Bereich Zustellung</a></li><li role="treeitem" data-id="297" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="297_anchor" aria-expanded="false" id="297" class="jstree-node  jstree-closed"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="297_anchor"><i class="jstree-icon jstree-themeicon object fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>Bereich Gutscheine</a></li><li role="treeitem" data-id="165" data-hidden="true" aria-selected="false" aria-level="1" aria-labelledby="165_anchor" aria-expanded="false" id="165" class="jstree-node  jstree-closed"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="165_anchor"><i class="jstree-icon jstree-themeicon object fa fa-folder-o notvisible jstree-themeicon-custom" role="presentation"></i>Bereich Mittagsmenue</a></li><li role="treeitem" data-id="102" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="102_anchor" aria-expanded="false" id="102" class="jstree-node  jstree-closed"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="102_anchor"><i class="jstree-icon jstree-themeicon object fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>Bereich USPs</a></li><li role="treeitem" data-id="155" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="155_anchor" aria-expanded="false" id="155" class="jstree-node  jstree-closed"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="155_anchor"><i class="jstree-icon jstree-themeicon object fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>Bereich Video</a></li><li role="treeitem" data-id="74" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="74_anchor" aria-expanded="false" id="74" class="jstree-node  jstree-closed"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="74_anchor"><i class="jstree-icon jstree-themeicon object fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>Bereich Willkommen</a></li><li role="treeitem" data-id="58" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="58_anchor" aria-expanded="false" id="58" class="jstree-node  jstree-closed"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="58_anchor"><i class="jstree-icon jstree-themeicon object fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>Bereich Willkommen 2</a></li><li role="treeitem" data-id="77" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="77_anchor" aria-expanded="false" id="77" class="jstree-node  jstree-closed"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="77_anchor"><i class="jstree-icon jstree-themeicon object fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>Bereich Cocktails</a></li><li role="treeitem" data-id="154" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="154_anchor" aria-expanded="false" id="154" class="jstree-node  jstree-closed"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="154_anchor"><i class="jstree-icon jstree-themeicon object fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>Bereich Coctails Karte</a></li><li role="treeitem" data-id="115" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="115_anchor" aria-expanded="false" id="115" class="jstree-node  jstree-closed"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="115_anchor"><i class="jstree-icon jstree-themeicon object fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>Bereich Gin</a></li><li role="treeitem" data-id="131" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="131_anchor" aria-expanded="false" id="131" class="jstree-node  jstree-closed"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="131_anchor"><i class="jstree-icon jstree-themeicon object fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>Bereich Gin Karte</a></li><li role="treeitem" data-id="133" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="133_anchor" aria-expanded="false" id="133" class="jstree-node  jstree-closed"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="133_anchor"><i class="jstree-icon jstree-themeicon object fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>Bereich Burgerbild</a></li><li role="treeitem" data-id="135" data-hidden="false" aria-selected="false" aria-level="1" aria-labelledby="135_anchor" aria-expanded="false" id="135" class="jstree-node  jstree-closed jstree-last"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="135_anchor"><i class="jstree-icon jstree-themeicon object fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>Bereich Reservierung</a></li></ul></div>
+						</div>
+					</div>
+				</div>
+		
+				<div class="tab-pane" id="files">
+					<div class="panel-body">
+						<div class="input-group">
+							<div class="input-group-btn">
+								<button class="btn btn-default" type="button" onclick="ce.filetree.tree.refresh()" data-toggle="tooltip" data-placement="right" data-container=".sidebar" title="" data-original-title="Ordner aktualisieren"><i class="fa fa-refresh"></i></button>
+							</div>
+												<input type="text" class="form-control" placeholder="Ordnersuche" id="foldersFilter">
+							<div class="input-group-btn">
+								<button class="btn btn-default btn-search" type="button"><i class="fa fa-search"></i></button>
+							</div>
+						</div>
+					</div>
+					<div class="panel-body tree-body">
+						<div class="scrollable half-height" style="clear: left; height: 20%; margin-right: -2px;">
+							<div id="fileTree" class="jstree jstree-3 jstree-default jstree-default-responsive" role="tree" aria-multiselectable="true" tabindex="0" aria-activedescendant="images" aria-busy="false"><ul class="jstree-container-ul jstree-children jstree-contextmenu" role="group"><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="images_anchor" aria-expanded="true" id="images" class="jstree-node  jstree-open"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="images_anchor"><i class="jstree-icon jstree-themeicon fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>images</a><ul role="group" class="jstree-children"><li role="treeitem" aria-selected="false" aria-level="2" aria-labelledby="images/cocktails_anchor" id="images/cocktails" class="jstree-node  jstree-leaf"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="images/cocktails_anchor"><i class="jstree-icon jstree-themeicon fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>cocktails</a></li><li role="treeitem" aria-selected="true" aria-level="2" aria-labelledby="images/karte_anchor" id="images/karte" class="jstree-node  jstree-leaf"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor jstree-clicked" href="#" tabindex="-1" id="images/karte_anchor"><i class="jstree-icon jstree-themeicon fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>karte</a></li><li role="treeitem" aria-selected="false" aria-level="2" aria-labelledby="images/slideshow_anchor" id="images/slideshow" class="jstree-node  jstree-leaf"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="images/slideshow_anchor"><i class="jstree-icon jstree-themeicon fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>slideshow</a></li><li role="treeitem" aria-selected="false" aria-level="2" aria-labelledby="images/sushi_anchor" aria-expanded="false" id="images/sushi" class="jstree-node  jstree-closed jstree-last"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="images/sushi_anchor"><i class="jstree-icon jstree-themeicon fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>sushi</a></li></ul></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="layout_anchor" aria-expanded="true" id="layout" class="jstree-node  jstree-open"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="layout_anchor"><i class="jstree-icon jstree-themeicon fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>layout</a><ul role="group" class="jstree-children"><li role="treeitem" aria-selected="false" aria-level="2" aria-labelledby="layout/icons_anchor" id="layout/icons" class="jstree-node  jstree-leaf jstree-last"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="layout/icons_anchor"><i class="jstree-icon jstree-themeicon fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>icons</a></li></ul></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="presse_anchor" id="presse" class="jstree-node  jstree-leaf jstree-last"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="presse_anchor"><i class="jstree-icon jstree-themeicon fa fa-folder-o jstree-themeicon-custom" role="presentation"></i>presse</a></li></ul></div>
+						</div>
+						<div class="filesContainer half-height" id="filesDropzone" style="height: 80%">
+							<div class="scrollable">
+								<div class="panel-body">
+									<div class="input-group">
+										<div class="input-group-btn">
+											<button class="btn btn-default" type="button" onclick="ce.filetree.rename();" data-toggle="tooltip" data-placement="right" data-container=".sidebar" title="" data-original-title="Datei umbenennen"><i class="fa fa-exchange"></i></button>
+											<button class="btn btn-default" type="button" onclick="ce.filetree.delete();" data-toggle="tooltip" data-placement="right" data-container=".sidebar" title="" data-original-title="Datei(en) löschen"><i class="fa fa-trash-o"></i></button>
+										</div>
+										<input type="search" class="form-control" placeholder="Dateisuche" id="filesFilter">
+										<div class="input-group-btn">
+											<button class="btn btn-default btn-search" type="button"><i class="fa fa-search"></i></button>
+										</div>
+									</div>
+									<div id="total-progress" style="display: none" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+										<div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress=""></div>
+									</div>
+								</div>
+		
+								<div id="filesContainer" class="">
+									<div id="filesLister_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><table id="filesLister" class="table XXtable-bordered table-striped table-condensed display responsive datatable dataTable no-footer dtr-inline" style="width: 100%;" role="grid">
+										<thead>
+											<tr role="row"><th class="nosort sorting_disabled" rowspan="1" colspan="1" style="width: 0px;" aria-label=""></th><th class="sorting_asc" tabindex="0" aria-controls="filesLister" rowspan="1" colspan="1" style="width: 0px;" aria-label="Name: activate to sort column descending" aria-sort="ascending">Name</th><th class="sorting" tabindex="0" aria-controls="filesLister" rowspan="1" colspan="1" style="width: 0px;" aria-label="Datum: activate to sort column ascending">Datum</th></tr>
+										</thead>
+									<tbody><tr id="2020-07-07-mittags-im-nuba.pdf" role="row" class="odd"><td tabindex="0"><div class="draggable ui-draggable ui-draggable-handle" data-file="images/karte/2020-07-07-mittags-im-nuba.pdf" data-size="1114" data-date="2020.07.13 09:17"><img src="/c+e/assets/icons/document.png"><i class="icon"></i></div></td><td class="sorting_1"><span>2020-07-07-mittags-im-nuba.pdf</span><span class="i">1114 kB</span></td><td><span>2020.07.13</span><span class="i">09:17</span></td></tr><tr id="2020-07-07-sushi-mittags-im-nuba.pdf" role="row" class="even"><td tabindex="0"><div class="draggable ui-draggable ui-draggable-handle" data-file="images/karte/2020-07-07-sushi-mittags-im-nuba.pdf" data-size="1281" data-date="2020.07.13 09:17"><img src="/c+e/assets/icons/document.png"><i class="icon"></i></div></td><td class="sorting_1"><span>2020-07-07-sushi-mittags-im-nuba.pdf</span><span class="i">1281 kB</span></td><td><span>2020.07.13</span><span class="i">09:17</span></td></tr><tr id="2021-05-19-mittagsmenue.pdf" role="row" class="odd"><td tabindex="0"><div class="draggable ui-draggable ui-draggable-handle" data-file="images/karte/2021-05-19-mittagsmenue.pdf" data-size="66" data-date="2021.05.19 10:10"><img src="/c+e/assets/icons/document.png"><i class="icon"></i></div></td><td class="sorting_1"><span>2021-05-19-mittagsmenue.pdf</span><span class="i">66 kB</span></td><td><span>2021.05.19</span><span class="i">10:10</span></td></tr><tr id="2021-05-19-speisekarte_ALT.pdf" role="row" class="even"><td tabindex="0"><div class="draggable ui-draggable ui-draggable-handle" data-file="images/karte/2021-05-19-speisekarte_ALT.pdf" data-size="437" data-date="2021.05.19 10:11"><img src="/c+e/assets/icons/document.png"><i class="icon"></i></div></td><td class="sorting_1"><span>2021-05-19-speisekarte_ALT.pdf</span><span class="i">437 kB</span></td><td><span>2021.05.19</span><span class="i">10:11</span></td></tr><tr id="2021-07-14-speisekarte.pdf" role="row" class="odd"><td tabindex="0"><div class="draggable ui-draggable ui-draggable-handle" data-file="images/karte/2021-07-14-speisekarte.pdf" data-size="503" data-date="2021.07.14 12:13"><img src="/c+e/assets/icons/document.png"><i class="icon"></i></div></td><td class="sorting_1"><span>2021-07-14-speisekarte.pdf</span><span class="i">503 kB</span></td><td><span>2021.07.14</span><span class="i">12:13</span></td></tr><tr id="delivery_lockdown_11_2021.pdf" role="row" class="even"><td tabindex="0"><div class="draggable ui-draggable ui-draggable-handle" data-file="images/karte/delivery_lockdown_11_2021.pdf" data-size="430" data-date="2021.11.22 09:37"><img src="/c+e/assets/icons/document.png"><i class="icon"></i></div></td><td class="sorting_1"><span>delivery_lockdown_11_2021.pdf</span><span class="i">430 kB</span></td><td><span>2021.11.22</span><span class="i">09:37</span></td></tr><tr id="speisekarte_07_2020_web.pdf" role="row" class="odd"><td tabindex="0"><div class="draggable ui-draggable ui-draggable-handle" data-file="images/karte/speisekarte_07_2020_web.pdf" data-size="179" data-date="2020.09.03 11:27"><img src="/c+e/assets/icons/document.png"><i class="icon"></i></div></td><td class="sorting_1"><span>speisekarte_07_2020_web.pdf</span><span class="i">179 kB</span></td><td><span>2020.09.03</span><span class="i">11:27</span></td></tr></tbody></table><div id="filesLister_processing" class="dataTables_processing panel panel-default" style="display: none;">Processing...</div></div>
+									<div id="filesUploader"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+		
+			</div>
+
+
+
+
+
+
+
+
+
+
+
+		</div>
+		<div class="gutter-col gutter-column-1">
+			<div class="handle"></div>
+		</div>
+		<div class="pane container-fluid" id="content">
+			<div class="ms-2">
+				<table id="example" class="table table-striped">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Position</th>
+							<th>Office</th>
+							<th>Age</th>
+							<th>Start date</th>
+							<th>Salary</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Tiger Nixon</td>
+							<td>System Architect</td>
+							<td>Edinburgh</td>
+							<td>61</td>
+							<td>2011/04/25</td>
+							<td>$320,800</td>
+						</tr>
+						<tr>
+							<td>Garrett Winters</td>
+							<td>Accountant</td>
+							<td>Tokyo</td>
+							<td>63</td>
+							<td>2011/07/25</td>
+							<td>$170,750</td>
+						</tr>
+						<tr>
+							<td>Ashton Cox</td>
+							<td>Junior Technical Author</td>
+							<td>San Francisco</td>
+							<td>66</td>
+							<td>2009/01/12</td>
+							<td>$86,000</td>
+						</tr>
+						<tr>
+							<td>Cedric Kelly</td>
+							<td>Senior Javascript Developer</td>
+							<td>Edinburgh</td>
+							<td>22</td>
+							<td>2012/03/29</td>
+							<td>$433,060</td>
+						</tr>
+						<tr>
+							<td>Airi Satou</td>
+							<td>Accountant</td>
+							<td>Tokyo</td>
+							<td>33</td>
+							<td>2008/11/28</td>
+							<td>$162,700</td>
+						</tr>
+						<tr>
+							<td>Brielle Williamson</td>
+							<td>Integration Specialist</td>
+							<td>New York</td>
+							<td>61</td>
+							<td>2012/12/02</td>
+							<td>$372,000</td>
+						</tr>
+						<tr>
+							<td>Herrod Chandler</td>
+							<td>Sales Assistant</td>
+							<td>San Francisco</td>
+							<td>59</td>
+							<td>2012/08/06</td>
+							<td>$137,500</td>
+						</tr>
+						<tr>
+							<td>Rhona Davidson</td>
+							<td>Integration Specialist</td>
+							<td>Tokyo</td>
+							<td>55</td>
+							<td>2010/10/14</td>
+							<td>$327,900</td>
+						</tr>
+						<tr>
+							<td>Colleen Hurst</td>
+							<td>Javascript Developer</td>
+							<td>San Francisco</td>
+							<td>39</td>
+							<td>2009/09/15</td>
+							<td>$205,500</td>
+						</tr>
+						<tr>
+							<td>Sonya Frost</td>
+							<td>Software Engineer</td>
+							<td>Edinburgh</td>
+							<td>23</td>
+							<td>2008/12/13</td>
+							<td>$103,600</td>
+						</tr>
+						<tr>
+							<td>Jena Gaines</td>
+							<td>Office Manager</td>
+							<td>London</td>
+							<td>30</td>
+							<td>2008/12/19</td>
+							<td>$90,560</td>
+						</tr>
+						<tr>
+							<td>Quinn Flynn</td>
+							<td>Support Lead</td>
+							<td>Edinburgh</td>
+							<td>22</td>
+							<td>2013/03/03</td>
+							<td>$342,000</td>
+						</tr>
+						<tr>
+							<td>Charde Marshall</td>
+							<td>Regional Director</td>
+							<td>San Francisco</td>
+							<td>36</td>
+							<td>2008/10/16</td>
+							<td>$470,600</td>
+						</tr>
+						<tr>
+							<td>Haley Kennedy</td>
+							<td>Senior Marketing Designer</td>
+							<td>London</td>
+							<td>43</td>
+							<td>2012/12/18</td>
+							<td>$313,500</td>
+						</tr>
+						<tr>
+							<td>Tatyana Fitzpatrick</td>
+							<td>Regional Director</td>
+							<td>London</td>
+							<td>19</td>
+							<td>2010/03/17</td>
+							<td>$385,750</td>
+						</tr>
+						<tr>
+							<td>Michael Silva</td>
+							<td>Marketing Designer</td>
+							<td>London</td>
+							<td>66</td>
+							<td>2012/11/27</td>
+							<td>$198,500</td>
+						</tr>
+						<tr>
+							<td>Paul Byrd</td>
+							<td>Chief Financial Officer (CFO)</td>
+							<td>New York</td>
+							<td>64</td>
+							<td>2010/06/09</td>
+							<td>$725,000</td>
+						</tr>
+						<tr>
+							<td>Gloria Little</td>
+							<td>Systems Administrator</td>
+							<td>New York</td>
+							<td>59</td>
+							<td>2009/04/10</td>
+							<td>$237,500</td>
+						</tr>
+						<tr>
+							<td>Bradley Greer</td>
+							<td>Software Engineer</td>
+							<td>London</td>
+							<td>41</td>
+							<td>2012/10/13</td>
+							<td>$132,000</td>
+						</tr>
+						<tr>
+							<td>Dai Rios</td>
+							<td>Personnel Lead</td>
+							<td>Edinburgh</td>
+							<td>35</td>
+							<td>2012/09/26</td>
+							<td>$217,500</td>
+						</tr>
+						<tr>
+							<td>Jenette Caldwell</td>
+							<td>Development Lead</td>
+							<td>New York</td>
+							<td>30</td>
+							<td>2011/09/03</td>
+							<td>$345,000</td>
+						</tr>
+						<tr>
+							<td>Yuri Berry</td>
+							<td>Chief Marketing Officer (CMO)</td>
+							<td>New York</td>
+							<td>40</td>
+							<td>2009/06/25</td>
+							<td>$675,000</td>
+						</tr>
+						<tr>
+							<td>Caesar Vance</td>
+							<td>Pre-Sales Support</td>
+							<td>New York</td>
+							<td>21</td>
+							<td>2011/12/12</td>
+							<td>$106,450</td>
+						</tr>
+						<tr>
+							<td>Doris Wilder</td>
+							<td>Sales Assistant</td>
+							<td>Sydney</td>
+							<td>23</td>
+							<td>2010/09/20</td>
+							<td>$85,600</td>
+						</tr>
+						<tr>
+							<td>Angelica Ramos</td>
+							<td>Chief Executive Officer (CEO)</td>
+							<td>London</td>
+							<td>47</td>
+							<td>2009/10/09</td>
+							<td>$1,200,000</td>
+						</tr>
+						<tr>
+							<td>Gavin Joyce</td>
+							<td>Developer</td>
+							<td>Edinburgh</td>
+							<td>42</td>
+							<td>2010/12/22</td>
+							<td>$92,575</td>
+						</tr>
+						<tr>
+							<td>Jennifer Chang</td>
+							<td>Regional Director</td>
+							<td>Singapore</td>
+							<td>28</td>
+							<td>2010/11/14</td>
+							<td>$357,650</td>
+						</tr>
+						<tr>
+							<td>Brenden Wagner</td>
+							<td>Software Engineer</td>
+							<td>San Francisco</td>
+							<td>28</td>
+							<td>2011/06/07</td>
+							<td>$206,850</td>
+						</tr>
+						<tr>
+							<td>Fiona Green</td>
+							<td>Chief Operating Officer (COO)</td>
+							<td>San Francisco</td>
+							<td>48</td>
+							<td>2010/03/11</td>
+							<td>$850,000</td>
+						</tr>
+						<tr>
+							<td>Shou Itou</td>
+							<td>Regional Marketing</td>
+							<td>Tokyo</td>
+							<td>20</td>
+							<td>2011/08/14</td>
+							<td>$163,000</td>
+						</tr>
+						<tr>
+							<td>Michelle House</td>
+							<td>Integration Specialist</td>
+							<td>Sydney</td>
+							<td>37</td>
+							<td>2011/06/02</td>
+							<td>$95,400</td>
+						</tr>
+						<tr>
+							<td>Suki Burks</td>
+							<td>Developer</td>
+							<td>London</td>
+							<td>53</td>
+							<td>2009/10/22</td>
+							<td>$114,500</td>
+						</tr>
+						<tr>
+							<td>Prescott Bartlett</td>
+							<td>Technical Author</td>
+							<td>London</td>
+							<td>27</td>
+							<td>2011/05/07</td>
+							<td>$145,000</td>
+						</tr>
+						<tr>
+							<td>Gavin Cortez</td>
+							<td>Team Leader</td>
+							<td>San Francisco</td>
+							<td>22</td>
+							<td>2008/10/26</td>
+							<td>$235,500</td>
+						</tr>
+						<tr>
+							<td>Martena Mccray</td>
+							<td>Post-Sales support</td>
+							<td>Edinburgh</td>
+							<td>46</td>
+							<td>2011/03/09</td>
+							<td>$324,050</td>
+						</tr>
+						<tr>
+							<td>Unity Butler</td>
+							<td>Marketing Designer</td>
+							<td>San Francisco</td>
+							<td>47</td>
+							<td>2009/12/09</td>
+							<td>$85,675</td>
+						</tr>
+						<tr>
+							<td>Howard Hatfield</td>
+							<td>Office Manager</td>
+							<td>San Francisco</td>
+							<td>51</td>
+							<td>2008/12/16</td>
+							<td>$164,500</td>
+						</tr>
+						<tr>
+							<td>Hope Fuentes</td>
+							<td>Secretary</td>
+							<td>San Francisco</td>
+							<td>41</td>
+							<td>2010/02/12</td>
+							<td>$109,850</td>
+						</tr>
+						<tr>
+							<td>Vivian Harrell</td>
+							<td>Financial Controller</td>
+							<td>San Francisco</td>
+							<td>62</td>
+							<td>2009/02/14</td>
+							<td>$452,500</td>
+						</tr>
+						<tr>
+							<td>Timothy Mooney</td>
+							<td>Office Manager</td>
+							<td>London</td>
+							<td>37</td>
+							<td>2008/12/11</td>
+							<td>$136,200</td>
+						</tr>
+						<tr>
+							<td>Jackson Bradshaw</td>
+							<td>Director</td>
+							<td>New York</td>
+							<td>65</td>
+							<td>2008/09/26</td>
+							<td>$645,750</td>
+						</tr>
+						<tr>
+							<td>Olivia Liang</td>
+							<td>Support Engineer</td>
+							<td>Singapore</td>
+							<td>64</td>
+							<td>2011/02/03</td>
+							<td>$234,500</td>
+						</tr>
+						<tr>
+							<td>Bruno Nash</td>
+							<td>Software Engineer</td>
+							<td>London</td>
+							<td>38</td>
+							<td>2011/05/03</td>
+							<td>$163,500</td>
+						</tr>
+						<tr>
+							<td>Sakura Yamamoto</td>
+							<td>Support Engineer</td>
+							<td>Tokyo</td>
+							<td>37</td>
+							<td>2009/08/19</td>
+							<td>$139,575</td>
+						</tr>
+						<tr>
+							<td>Thor Walton</td>
+							<td>Developer</td>
+							<td>New York</td>
+							<td>61</td>
+							<td>2013/08/11</td>
+							<td>$98,540</td>
+						</tr>
+						<tr>
+							<td>Finn Camacho</td>
+							<td>Support Engineer</td>
+							<td>San Francisco</td>
+							<td>47</td>
+							<td>2009/07/07</td>
+							<td>$87,500</td>
+						</tr>
+						<tr>
+							<td>Serge Baldwin</td>
+							<td>Data Coordinator</td>
+							<td>Singapore</td>
+							<td>64</td>
+							<td>2012/04/09</td>
+							<td>$138,575</td>
+						</tr>
+						<tr>
+							<td>Zenaida Frank</td>
+							<td>Software Engineer</td>
+							<td>New York</td>
+							<td>63</td>
+							<td>2010/01/04</td>
+							<td>$125,250</td>
+						</tr>
+						<tr>
+							<td>Zorita Serrano</td>
+							<td>Software Engineer</td>
+							<td>San Francisco</td>
+							<td>56</td>
+							<td>2012/06/01</td>
+							<td>$115,000</td>
+						</tr>
+						<tr>
+							<td>Jennifer Acosta</td>
+							<td>Junior Javascript Developer</td>
+							<td>Edinburgh</td>
+							<td>43</td>
+							<td>2013/02/01</td>
+							<td>$75,650</td>
+						</tr>
+						<tr>
+							<td>Cara Stevens</td>
+							<td>Sales Assistant</td>
+							<td>New York</td>
+							<td>46</td>
+							<td>2011/12/06</td>
+							<td>$145,600</td>
+						</tr>
+						<tr>
+							<td>Hermione Butler</td>
+							<td>Regional Director</td>
+							<td>London</td>
+							<td>47</td>
+							<td>2011/03/21</td>
+							<td>$356,250</td>
+						</tr>
+						<tr>
+							<td>Lael Greer</td>
+							<td>Systems Administrator</td>
+							<td>London</td>
+							<td>21</td>
+							<td>2009/02/27</td>
+							<td>$103,500</td>
+						</tr>
+						<tr>
+							<td>Jonas Alexander</td>
+							<td>Developer</td>
+							<td>San Francisco</td>
+							<td>30</td>
+							<td>2010/07/14</td>
+							<td>$86,500</td>
+						</tr>
+						<tr>
+							<td>Shad Decker</td>
+							<td>Regional Director</td>
+							<td>Edinburgh</td>
+							<td>51</td>
+							<td>2008/11/13</td>
+							<td>$183,000</td>
+						</tr>
+						<tr>
+							<td>Michael Bruce</td>
+							<td>Javascript Developer</td>
+							<td>Singapore</td>
+							<td>29</td>
+							<td>2011/06/27</td>
+							<td>$183,000</td>
+						</tr>
+						<tr>
+							<td>Donna Snider</td>
+							<td>Customer Support</td>
+							<td>New York</td>
+							<td>27</td>
+							<td>2011/01/25</td>
+							<td>$112,000</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th>Name</th>
+							<th>Position</th>
+							<th>Office</th>
+							<th>Age</th>
+							<th>Start date</th>
+							<th>Salary</th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="exampleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog Xmodal-fullscreen">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+			  ...
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			  <button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		  </div>
+		</div>
+	</div>
+
+	<div class="offcanvas offcanvas-end" data-bs-backdrop="false" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+		<div class="offcanvas-header">
+		  <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+		  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body">
+		  <div>
+			Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+		  </div>
+		  <p>Clicked on ROW ID <span id="row_id">_</span></p>
+		  <div class="dropdown mt-3">
+			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+			  Dropdown button
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			  <li><a class="dropdown-item" href="#">Action</a></li>
+			  <li><a class="dropdown-item" href="#">Another action</a></li>
+			  <li><a class="dropdown-item" href="#">Something else here</a></li>
+			</ul>
+		  </div>
+		</div>
+	</div>
+
+
+	<script>
+		var eddit_state = 
+		{
+			contentWidth: 0,
+			gridSizes: '48px 250px 0px 1fr'
+		}
+
+		loadState();
+
+		function resizeContent() {
+			eddit_state.gridSizes = document.querySelector('#grid').style['grid-template-columns'];
+			eddit_state.contentWidth = $('#content').outerWidth();
+			$('#offcanvasExample').css( { width: eddit_state.contentWidth } );
+		}
+		function loadState() {
+			var _state = JSON.parse( window.localStorage.getItem('eddit_state') );
+			if (typeof _state == 'object' && _state != null)
+			{
+				console.log(_state)
+				eddit_state = _state;
+				$('#grid').css('grid-template-columns', eddit_state.gridSizes);
+				console.log( 'loadState', eddit_state);
+			}
+		}
+		function saveState() {
+			window.localStorage.setItem('eddit_state', JSON.stringify(eddit_state));
+			console.log( 'saveState', eddit_state);
+		}
+		function hideLists() {
+			$('#grid').css('grid-template-columns', '48px 0px 0px 1fr');
+		}
+		// https://split.js.org/#/split-grid
+		// https://github.com/nathancahill/split/tree/master/packages/split-grid
+		var grid = Split({ // gutters specified in options
+			columnGutters: [{
+				track: 2,
+				element: document.querySelector('.gutter-column-1'),
+			}],
+			columnMinSizes: { 1: 250 },
+			snapOffset: 0,
+			onDrag: resizeContent,
+			onDragEnd: saveState
+		})
+
+		$(document).ready( function () {
+
+			resizeContent();
+			var bsOffcanvas = new bootstrap.Offcanvas( $('#offcanvasExample') );
+
+			var dataTable = $('#example')
+				.DataTable( {
+					fixedHeader: {
+						header: true,
+						headerOffset: 37
+					},
+					select: true,
+					stateSave: true,
+				} )
+				.on('dblclick', 'tr', function () {
+					dataTable.rows(this).select();
+					bsOffcanvas.show();
+
+					var index = dataTable.row(this).index();
+					$('#offcanvasExample #row_id').html(index);
+					// console.log('dblclick',this,index);
+				});
+			// new $.fn.dataTable.FixedHeader( dataTable, {
+			// 	header: true,
+			// 	headerOffset: 50
+			// });
+
+			$('#exampleModal')
+				.on('show.bs.modal', function () {
+					// console.log('show modal');
+				});
+
+			$('#offcanvasExample')
+				.on('show.bs.offcanvas', function () {
+					// console.log('show offcanvas, resize to',contentWidth);
+					$(this).css( { width: eddit_state.contentWidth } )
+				})
+
+		});
+
+	</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+.search-result {
+	display: block;
+	margin: 0 0 3em 0;
+	padding: 1em;
+	background: transparent url('https://s3.eu-central-1.amazonaws.com/lawog/layout/stripe-opacity.png') repeat top left;
+}
+.search-result:hover {
+	text-decoration: none;
+	/*background: transparent url('https://s3.eu-central-1.amazonaws.com/lawog/layout/stripe-opacity.png') repeat top left;*/
+}
+.search-lines {
+	color: #000000;
+}
+.search-hl {
+	display: inline-block;
+	background-color: rgb(255,212,72);
+	padding: 3px;
+}
+
+
+
+#topSearchBar {
+	display:none; 
+	position:absolute; 
+	padding: 1rem 2rem 0rem 3rem; 
+	background: white; 
+	z-index: 10;
+}
+#topSearchBar input {
+	display: block;
+	width: 100%;
+	font-family: 'ProximaNova';
+	font-size: 16px;
+	text-align: center;
+	border-color: #CCC;
+	border-width: 0 0 1px 0;
+	border-radius: 0;
+	padding: .375rem .75rem;
+}
+.scroll-to-fixed-fixed #topSearchBar {
+	padding-top: 0.5rem;
+	padding-bottom: 0;
+}
